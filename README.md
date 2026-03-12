@@ -19,7 +19,19 @@ The primary goal of the project is Python reuse:
 
 ## Install
 
-Install as a Python package:
+Install from PyPI with `pip`:
+
+```bash
+pip install olliq
+```
+
+Install from PyPI with `pipx`:
+
+```bash
+pipx install olliq
+```
+
+Install from a local checkout:
 
 ```bash
 pip install .
@@ -31,7 +43,7 @@ Install directly from GitHub:
 pip install git+https://github.com/guelfoweb/olliq.git
 ```
 
-Install the CLI with isolated environment:
+Install the CLI from a local checkout with isolated environment:
 
 ```bash
 pipx install .
@@ -49,7 +61,7 @@ pipx install git+https://github.com/guelfoweb/olliq.git
 GitHub Actions.
 
 The repository includes the workflow
-[`publish.yml`](/home/guelfoweb/LAB/ollamabridge/.github/workflows/publish.yml),
+[`publish.yml`](.github/workflows/publish.yml),
 configured for:
 
 - repository: `guelfoweb/olliq`
