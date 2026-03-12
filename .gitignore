@@ -5,6 +5,7 @@ __pycache__/
 .Python
 .venv/
 venv/
+env/
 
 build/
 dist/
@@ -13,4 +14,7 @@ dist/
 .coverage
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
 
+.env
+.pypirc
