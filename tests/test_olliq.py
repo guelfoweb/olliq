@@ -336,8 +336,9 @@ class OlliqTests(unittest.TestCase):
         fake_client = FakeClient(host=olliq.DEFAULT_CLOUD_OLLAMA_URL)
 
         with patch("olliq.cli.build_client", return_value=fake_client):
-            with patch("builtins.print") as mock_print:
-                exit_code = olliq.cli.main(["--cloud", "--list"])
+            with patch("olliq.cli._resolve_cli_api_key", return_value="cloud-secret"):
+                with patch("builtins.print") as mock_print:
+                    exit_code = olliq.cli.main(["--cloud", "--list"])
 
         self.assertEqual(exit_code, 0)
         printed_lines = [call.args[0] for call in mock_print.call_args_list]
