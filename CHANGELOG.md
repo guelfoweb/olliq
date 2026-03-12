@@ -2,8 +2,10 @@
 
 ## Unreleased
 
-- Made the `ollama` dependency optional in package metadata so `pip install .` can succeed even on environments where the official client is harder to install.
 - Renamed the project package and CLI from `ollamabridge` to `olliq`.
+- Set the package license to MIT.
+- Added packaging metadata for the public repository `https://github.com/guelfoweb/olliq`.
+- Added GitHub Actions workflows for CI and PyPI Trusted Publishing.
 - Simplified the CLI cloud switch so `--cloud` directly enables cloud mode.
 - Kept the package version at `0.1.0` until public distribution.
 - Added project attribution for Gianni Amato in package metadata and documentation.
@@ -21,6 +23,7 @@
 - Improved generation errors for missing models with hints to use `--list`.
 - Added optional `system_prompt` support in config, environment, CLI, and generation flow.
 - Added `create_config` as the preferred public configuration constructor.
+- Removed separate `create_local_config` and `create_cloud_config` helpers in favor of `create_config(cloud=True)`.
 - Kept `create_ollama_config` as a backward-compatible alias.
 - Added CLI support for piped `stdin`, including combined instruction plus input flows.
-- Added interactive `OLLAMA_API_KEY` prompting for cloud mode when running in a TTY.
+- Restricted interactive `OLLAMA_API_KEY` prompting to the CLI, while keeping library code deterministic.

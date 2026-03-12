@@ -43,6 +43,37 @@ CLI install directly from GitHub:
 pipx install git+https://github.com/guelfoweb/olliq.git
 ```
 
+## Release to PyPI
+
+`olliq` is ready for PyPI publishing through PyPI Trusted Publishing with
+GitHub Actions.
+
+The repository includes the workflow
+[`publish.yml`](/home/guelfoweb/LAB/ollamabridge/.github/workflows/publish.yml),
+configured for:
+
+- repository: `guelfoweb/olliq`
+- workflow name: `publish.yml`
+- GitHub environment: `pypi`
+- PyPI project name: `olliq`
+
+Recommended release flow:
+
+1. Push the repository to GitHub.
+2. Create and push a version tag.
+3. Let GitHub Actions build and publish the release to PyPI.
+
+Example:
+
+```bash
+git push -u origin main
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The workflow can also be triggered manually from GitHub Actions with
+`workflow_dispatch`.
+
 ## Mental Model
 
 There are three main Python usage paths:
