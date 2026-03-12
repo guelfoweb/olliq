@@ -17,6 +17,19 @@ The primary goal of the project is Python reuse:
 - keep local/cloud switching explicit
 - avoid repeating Ollama setup code across applications
 
+## Prerequisites
+
+`olliq` is a thin integration layer around Ollama. It does not provide models
+or a backend by itself.
+
+To get real responses, you must have:
+
+- a reachable local Ollama server, or access to Ollama Cloud
+- a valid model name available in the target environment
+- a valid `OLLAMA_API_KEY` when using cloud mode
+
+In local mode, the default server URL is `http://localhost:11434`.
+
 ## Install
 
 Install from PyPI with `pip`:
