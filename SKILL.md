@@ -42,6 +42,17 @@ Read these files first when the task touches them:
 - Do not add application-specific logic such as retrieval, indexing, OCR, or RAG.
 - Keep all project text in English.
 
+## What `olliq` is for
+
+Use `olliq` when a project needs one or more of these:
+
+- a small reusable bridge around the official Python `ollama.Client`
+- consistent local/cloud switching
+- configuration from code, environment variables, or `config.json`
+- a single place to resolve model, host, temperature, and cloud auth
+
+Do not use `olliq` as a general LLM framework. It is intentionally narrow.
+
 ## Public API expectations
 
 The primary public API is intentionally small:
@@ -148,6 +159,34 @@ Avoid bypassing `olliq` internals from other projects:
 
 Stick to the public package exports unless you are changing `olliq` itself.
 
+## What not to do
+
+- Do not rebuild Ollama setup logic manually if `olliq` can already express it.
+- Do not import private modules from application code.
+- Do not add RAG, retrieval, indexing, OCR, note-processing, or vector-store logic to `olliq`.
+- Do not put interactive prompting in reusable library code.
+- Do not assume local and cloud expose the same models.
+- Do not assume installing `olliq` is enough to get real responses.
+- Do not change public behavior without updating tests and `README.md`.
+- Do not widen the public API unless there is a clear maintenance or migration reason.
+- Do not bypass `create_config`, `load_config`, or `resolve_config` unless the task is specifically about `olliq` internals.
+
+## Quick integration checklist
+
+When integrating `olliq` into another project, verify these points:
+
+1. `olliq` is installed in the target environment.
+2. The project imports only from the public package root.
+3. The selected config path matches the application style:
+   - explicit code config
+   - environment or `config.json`
+   - mixed config with explicit overrides
+4. The chosen model exists in the actual target environment.
+5. The local Ollama server or Ollama Cloud endpoint is reachable.
+6. `OLLAMA_API_KEY` is available for cloud mode.
+
+If any of these are missing, expect runtime failure and state that clearly.
+
 ## Runtime model
 
 Do not assume the package alone can produce real responses.
@@ -162,6 +201,39 @@ CLI, not in the reusable core.
 When integrating into another project, document these constraints explicitly for
 the caller instead of assuming they are obvious.
 
+## CLI notes
+
+The CLI is secondary to the Python API. Treat it as a convenience layer.
+
+Important CLI behavior:
+
+- `--cloud` enables cloud mode for that command
+- `--list` lists models for the configured target
+- `--model`, `--url`, `--temperature`, and `--system-prompt` act as CLI overrides
+- `--config` points to `config.json`
+- stdin can be combined with a positional prompt
+
+Cloud CLI behavior:
+
+- cloud mode uses `https://ollama.com`
+- cloud mode requires `OLLAMA_API_KEY`
+- the CLI may prompt for `OLLAMA_API_KEY` only in an interactive terminal
+
+Do not move that interactive behavior into the core library.
+
+## Common failure modes
+
+When `olliq` fails, check these first:
+
+- missing `OLLAMA_MODEL`
+- missing `OLLAMA_API_KEY` in cloud mode
+- local Ollama server not running or not reachable
+- invalid `config.json`
+- model not available in the selected local/cloud target
+- tests relying on local environment values instead of explicit test setup
+
+When fixing tests, prefer mocking explicit inputs over depending on the current shell environment.
+
 ## Change workflow
 
 1. Inspect the relevant code and tests before editing.
@@ -172,6 +244,15 @@ the caller instead of assuming they are obvious.
 3. Update tests whenever behavior changes.
 4. Update `README.md` when the public behavior, install flow, or examples change.
 5. Keep GitHub Actions and PyPI workflow aligned with current packaging.
+
+## Preferred implementation style
+
+- Keep functions small and single-purpose.
+- Separate configuration logic from runtime logic and from CLI interaction.
+- Prefer explicit argument passing over hidden behavior.
+- Prefer deterministic library behavior.
+- Keep examples short and copyable.
+- Match documented behavior in `README.md`, tests, and package exports.
 
 ## Validation
 
